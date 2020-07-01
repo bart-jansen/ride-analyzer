@@ -29,9 +29,18 @@ export default class FileAnalyzer {
 
 			dataPoints = dataPoints[0];
 
+			let TPXKey = 'TPX',
+				WattsKey = 'Watts';
+				
+			// adds support for Garmin Connect TCX files
+			if(dataPoints[0].Extensions['ns3:TPX']) {
+				TPXKey = 'ns3:TPX';
+				WattsKey = 'ns3:Watts';
+			}
+
 			for (let i = 0; i < dataPoints.length; i++) {
 				cleanData.push({date: new Date(dataPoints[i].Time._text), 
-					value: dataPoints[i].Extensions.TPX.Watts ? dataPoints[i].Extensions.TPX.Watts._text : 0
+					value: dataPoints[i].Extensions[TPXKey][WattsKey] ? dataPoints[i].Extensions[TPXKey][WattsKey]._text : 0
 				})
 			}
 		}
