@@ -2,7 +2,7 @@
 
 const parser = require('xml-js');
 
-export default class GPXAnalyzer {
+export default class FileAnalyzer {
 	constructor(options) {
 		const data = JSON.parse(parser.xml2json(options.xml, { compact: true }));
 
@@ -16,7 +16,7 @@ export default class GPXAnalyzer {
 
 			for (let i = 0; i < dataPoints.length; i++) {
 				let date = new Date(dataPoints[i].time._text);
-				date.setSeconds(date.getSeconds() - 20);
+				//  date.setSeconds(date.getSeconds() - 21);
 				
 				cleanData.push({
 					date: date, 
