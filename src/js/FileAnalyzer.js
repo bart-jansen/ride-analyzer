@@ -7,7 +7,8 @@ export default class FileAnalyzer {
 		const data = JSON.parse(parser.xml2json(options.xml, { compact: true }));
 
 		let dataPoints = [],
-			cleanData = [];
+			cleanData = [],
+			wattPropertyPrefix = ``; // If garmin connect is being used the property name is ns3:TPX insted of just TPX
 
 		if(options.fileName.includes('.gpx')) {
 			this.findNested(data, 'trkpt', dataPoints);
@@ -29,9 +30,14 @@ export default class FileAnalyzer {
 
 			dataPoints = dataPoints[0];
 
+			if(dataPoints[0].Extensions[`ns3:TPX`]){
+				//Garming connect is being used so add the property prefix
+				wattPropertyPrefix = `ns3:`
+			}
+
 			for (let i = 0; i < dataPoints.length; i++) {
 				cleanData.push({date: new Date(dataPoints[i].Time._text), 
-					value: dataPoints[i].Extensions.TPX.Watts ? dataPoints[i].Extensions.TPX.Watts._text : 0
+					value: dataPoints[i].Extensions[`${wattPropertyPrefix}TPX`][`${wattPropertyPrefix}Watts`] ? dataPoints[i].Extensions[`${wattPropertyPrefix}TPX`][`${wattPropertyPrefix}Watts`]._text : 0
 				})
 			}
 		}
