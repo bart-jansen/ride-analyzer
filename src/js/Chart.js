@@ -18,6 +18,18 @@ export default class Chart {
         let dateAxis = this.chart.xAxes.push(new am4charts.DateAxis());
         dateAxis.renderer.minGridDistance = 60;
 
+        dateAxis.events.on("startendchanged", ev => {
+            console.log(ev.target);
+            console.log(ev.target.currentItemStartPoint.x);
+
+            console.log(ev.target.currentItemEndPoint.x);
+
+            var start = new Date(ev.target.minZoomed);
+            var end = new Date(ev.target.maxZoomed);
+            console.log("New range: " + start + " -- " + end);
+        })
+
+
         let valueAxis = this.chart.yAxes.push(new am4charts.ValueAxis());
 
         this.chart.cursor = new am4charts.XYCursor();
@@ -43,7 +55,5 @@ export default class Chart {
     
         // reload data
         this.chart.invalidateData();
-
-        console.log(chartData[20]);
 	}
 }
