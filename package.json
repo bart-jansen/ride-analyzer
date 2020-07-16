@@ -34,6 +34,7 @@
     "@amcharts/amcharts4": "^4.9.28",
     "@azure/storage-blob": "^12.1.2",
     "fit-file-parser": "^1.6.18",
+    "jstat": "^1.9.3",
     "xml-js": "^1.6.11"
   }
 }
