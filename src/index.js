@@ -1,6 +1,7 @@
 import './css/index.css'
 import FileAnalyzer from './js/FileAnalyzer'
 import Chart from './js/Chart'
+import Stats from './js/Stats'
 
 let ChartObj = new Chart('chartdiv')
 let fileInput = document.getElementById('xmlFile');
@@ -13,6 +14,11 @@ fileInput.addEventListener('change', function (e) {
                 fileName: file.name.toLowerCase()
             });
 
+            let StatsObj = new Stats({
+                data: chartData,
+                fileName: file.name.toLowerCase(),
+                divName:'statsdiv'
+            })
             ChartObj.addSeries(chartData, file.name.toLowerCase());
         });
     }
