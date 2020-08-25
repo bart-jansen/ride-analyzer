@@ -24,7 +24,7 @@ export default class Stats {
             result = `${result} 
             <div class="stats-box">
                 <p class="stats-title">${stat}</p>
-                <p class="stats-value">${Math.round(data[stat]() * 100) / 100}</p>
+                <p class="stats-value stats-${stat}">${Math.round(data[stat]() * 100) / 100}</p>
             </div>`
         });
         return result

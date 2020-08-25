@@ -2,7 +2,9 @@
 
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+// import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+var { jStat } = require('jstat')
+
 
 export default class Chart {
 	constructor(chartDiv) {
@@ -19,16 +21,29 @@ export default class Chart {
         dateAxis.renderer.minGridDistance = 60;
 
         dateAxis.events.on("startendchanged", ev => {
-            console.log(ev.target);
-            console.log(ev.target.currentItemStartPoint.x);
+            console.log('event changed');
+            let start = new Date(ev.target.minZoomed),
+                end = new Date(ev.target.maxZoomed);
 
-            console.log(ev.target.currentItemEndPoint.x);
+            this.chart.series.values.forEach((series, seriesIndex) => {
+                let newDataRange = [];
 
-            var start = new Date(ev.target.minZoomed);
-            var end = new Date(ev.target.maxZoomed);
-            console.log("New range: " + start + " -- " + end);
-        })
+                series.data.forEach(dataPt => {
+                    if(dataPt.date >= start && dataPt.date <= end) {
+                        newDataRange.push(dataPt.value);
+                    }
+                });
 
+                let statList = ['mean', 'max', 'min', 'stdev']
+                var jObj = jStat(newDataRange);
+
+                // todo: refactor
+                statList.forEach(stat => {
+                    document.querySelector(`#statsdiv > div:nth-child(${seriesIndex+1}) .stats-${stat}`).innerHTML = 
+                        Math.round(jObj[stat]() * 100) / 100
+                })
+            });
+        });
 
         let valueAxis = this.chart.yAxes.push(new am4charts.ValueAxis());
 
