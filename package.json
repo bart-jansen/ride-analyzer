@@ -37,6 +37,7 @@
     "easy-fit": "0.0.8",
     "filepond": "^4.18.0",
     "fit-file-parser": "^1.6.18",
+    "jstat": "^1.9.3",
     "xml-js": "^1.6.11"
   }
 }
